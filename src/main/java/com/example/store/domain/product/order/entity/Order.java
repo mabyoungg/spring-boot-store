@@ -2,6 +2,7 @@ package com.example.store.domain.product.order.entity;
 
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.product.cart.entity.CartItem;
+import com.example.store.global.exceptions.GlobalException;
 import com.example.store.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -37,6 +38,9 @@ public class Order extends BaseEntity {
     private LocalDateTime refundDate;
 
     public void addItem(CartItem cartItem) {
+        if (buyer.has(cartItem.getProduct()))
+            throw new GlobalException("400-1", "이미 구매한 상품입니다.");
+
         OrderItem orderItem = OrderItem.builder()
                 .order(this)
                 .product(cartItem.getProduct())

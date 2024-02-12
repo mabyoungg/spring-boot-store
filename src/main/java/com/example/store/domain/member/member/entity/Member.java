@@ -2,6 +2,7 @@ package com.example.store.domain.member.member.entity;
 
 import com.example.store.domain.book.book.entity.Book;
 import com.example.store.domain.member.myBook.entity.MyBook;
+import com.example.store.domain.product.product.entity.Product;
 import com.example.store.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -40,5 +41,18 @@ public class Member extends BaseEntity {
 
     public void removeMyBook(Book book) {
         myBooks.removeIf(myBook -> myBook.getBook().equals(book));
+    }
+
+    public boolean hasBook(Book book) {
+        return myBooks
+                .stream()
+                .anyMatch(myBook -> myBook.getBook().equals(book));
+    }
+
+    public boolean has(Product product) {
+        return switch (product.getRelTypeCode()) {
+            case "book" -> hasBook(product.getBook());
+            default -> false;
+        };
     }
 }

@@ -4,6 +4,7 @@ import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.product.cart.entity.CartItem;
 import com.example.store.domain.product.cart.repository.CartItemRepository;
 import com.example.store.domain.product.product.entity.Product;
+import com.example.store.global.exceptions.GlobalException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,9 @@ public class CartService {
 
     @Transactional
     public CartItem addItem(Member buyer, Product product) {
+        if (buyer.has(product))
+            throw new GlobalException("400-1", "이미 구매한 상품입니다.");
+
         CartItem cartItem = CartItem.builder()
                 .buyer(buyer)
                 .product(product)
