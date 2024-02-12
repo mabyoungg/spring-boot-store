@@ -5,8 +5,10 @@ import com.example.store.domain.cash.cash.repository.CashLogRepository;
 import com.example.store.domain.cash.cash.service.CashService;
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.member.member.repository.MemberRepository;
+import com.example.store.global.app.AppConfig;
 import com.example.store.global.jpa.BaseEntity;
 import com.example.store.global.rsData.RsData;
+import com.example.store.standard.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,8 @@ public class MemberService {
         Optional<Member> opMember = findByUsername(username);
 
         if (opMember.isPresent()) return RsData.of("200", "이미 존재합니다.", opMember.get());
+
+        String filePath = Ut.str.hasLength(profileImgUrl) ? Ut.file.downloadFileByHttp(profileImgUrl, AppConfig.getTempDirPath()) : "";
 
         return join(username, "", nickname);
     }
