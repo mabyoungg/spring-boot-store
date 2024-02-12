@@ -47,8 +47,8 @@ logging:
 custom:
   temp:
     dirPath: c:/temp/store/temp
-    genFile:
-      dirPath: c:/temp/store
+  genFile:
+    dirPath: c:/temp/store
   site:
     name: techit.kro.kr
     baseUrl: "http://localhost:${server.port}"
