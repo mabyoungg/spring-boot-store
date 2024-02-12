@@ -6,6 +6,7 @@ import com.example.store.domain.cash.cash.entity.CashLog;
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.member.member.service.MemberService;
 import com.example.store.domain.product.cart.service.CartService;
+import com.example.store.domain.product.order.entity.Order;
 import com.example.store.domain.product.order.service.OrderService;
 import com.example.store.domain.product.product.entity.Product;
 import com.example.store.domain.product.product.service.ProductService;
@@ -61,9 +62,13 @@ public class NotProd {
         cartService.addItem(memberUser1, product2);
         cartService.addItem(memberUser1, product3);
 
-        memberService.addCash(memberUser1, 100_000, CashLog.EvenType.충전__무통장입금, memberUser1);
+        memberService.addCash(memberUser1, 150_000, CashLog.EvenType.충전__무통장입금, memberUser1);
         memberService.addCash(memberUser1, -20_000, CashLog.EvenType.출금__통장입금, memberUser1);
 
-        orderService.createFromCart(memberUser1);
+        Order order1 = orderService.createFromCart(memberUser1);
+
+        long order1PayPrice = order1.calcPayPrice();
+
+        orderService.payByCashOnly(order1);
     }
 }
