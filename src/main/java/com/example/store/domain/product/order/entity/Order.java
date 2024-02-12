@@ -54,4 +54,12 @@ public class Order extends BaseEntity {
     public void setPaymentDone() {
         payDate = LocalDateTime.now();
     }
+
+    public void setCancelDone() {
+        cancelDate = LocalDateTime.now();
+    }
+
+    public void setRefundDone() {
+        refundDate = LocalDateTime.now();
+    }
 }
