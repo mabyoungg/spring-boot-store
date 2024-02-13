@@ -1,6 +1,8 @@
 package com.example.store.domain.product.product.controller;
 
 import com.example.store.domain.product.product.entity.Product;
+import com.example.store.domain.product.product.entity.ProductBookmark;
+import com.example.store.domain.product.product.service.ProductBookmarkService;
 import com.example.store.domain.product.product.service.ProductService;
 import com.example.store.global.exceptions.GlobalException;
 import com.example.store.global.rq.Rq;
@@ -25,9 +27,19 @@ import java.util.stream.Collectors;
 public class ProductController {
     private final Rq rq;
     private final ProductService productService;
+    private final ProductBookmarkService productBookmarkService;
+
+    @GetMapping("/bookmarkList")
+    public String showBookmarkList() {
+        List<ProductBookmark> productBookmarks = productBookmarkService.findByMember(rq.getMember());
+
+        rq.setAttribute("productBookmarks", productBookmarks);
+
+        return "domain/product/product/bookmarkList";
+    }
 
     @GetMapping("/list")
-    public String list(
+    public String showList(
             @RequestParam(value = "kwType", defaultValue = "name") List<String> kwTypes,
             @RequestParam(defaultValue = "") String kw,
             @RequestParam(defaultValue = "1") int page,
