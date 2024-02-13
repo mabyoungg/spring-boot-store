@@ -2,6 +2,7 @@ package com.example.store.domain.product.order.entity;
 
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.product.cart.entity.CartItem;
+import com.example.store.global.app.AppConfig;
 import com.example.store.global.exceptions.GlobalException;
 import com.example.store.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static lombok.AccessLevel.PROTECTED;
@@ -92,6 +94,6 @@ public class Order extends BaseEntity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // LocalDateTime 객체를 문자열로 변환
-        return getCreateDate().format(formatter) + "__" + getId();
+        return getCreateDate().format(formatter) + (AppConfig.isNotProd() ? "-test-" + UUID.randomUUID().toString() : "") + "__" + getId();
     }
 }
