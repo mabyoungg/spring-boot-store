@@ -2,6 +2,7 @@ package com.example.store.domain.product.order.entity;
 
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.product.cart.entity.CartItem;
+import com.example.store.domain.product.product.entity.Product;
 import com.example.store.global.app.AppConfig;
 import com.example.store.global.exceptions.GlobalException;
 import com.example.store.global.jpa.BaseTime;
@@ -42,12 +43,16 @@ public class Order extends BaseTime {
     private LocalDateTime refundDate; // 환불일
 
     public void addItem(CartItem cartItem) {
-        if (buyer.has(cartItem.getProduct()))
+        addItem(cartItem.getProduct());
+    }
+
+    public void addItem(Product product) {
+        if (buyer.has(product))
             throw new GlobalException("400-1", "이미 구매한 상품입니다.");
 
         OrderItem orderItem = OrderItem.builder()
                 .order(this)
-                .product(cartItem.getProduct())
+                .product(product)
                 .build();
 
 

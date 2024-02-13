@@ -7,6 +7,7 @@ import com.example.store.domain.product.cart.entity.CartItem;
 import com.example.store.domain.product.cart.service.CartService;
 import com.example.store.domain.product.order.entity.Order;
 import com.example.store.domain.product.order.repositry.OrderRepository;
+import com.example.store.domain.product.product.entity.Product;
 import com.example.store.global.exceptions.GlobalException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,19 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartService cartService;
     private final MemberService memberService;
+
+    @Transactional
+    public Order createFromProduct(Member buyer, Product product) {
+        Order order = Order.builder()
+                .buyer(buyer)
+                .build();
+
+        order.addItem(product);
+
+        orderRepository.save(order);
+
+        return order;
+    }
 
     @Transactional
     public Order createFromCart(Member buyer) {

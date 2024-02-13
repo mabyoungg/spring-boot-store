@@ -3,6 +3,8 @@ package com.example.store.domain.product.order.controller;
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.product.order.entity.Order;
 import com.example.store.domain.product.order.service.OrderService;
+import com.example.store.domain.product.product.entity.Product;
+import com.example.store.domain.product.product.service.ProductService;
 import com.example.store.global.app.AppConfig;
 import com.example.store.global.exceptions.GlobalException;
 import com.example.store.global.rq.Rq;
@@ -39,6 +41,19 @@ import java.util.List;
 public class OrderController {
     private final Rq rq;
     private final OrderService orderService;
+    private final ProductService productService;
+
+    @PostMapping("/directMakeOrder/{productId}")
+    public String directMakeOrder(
+            @PathVariable long productId
+    ) {
+        Product product = productService.findById(productId)
+                .orElseThrow(() -> new GlobalException("400", "존재하지 않는 상품입니다."));
+
+        Order order = orderService.createFromProduct(rq.getMember(), product);
+
+        return rq.redirect("/order/" + order.getId(), "주문이 완료되었습니다.");
+    }
 
     @PostMapping("/createFromCart")
     public String createFromCart() {
