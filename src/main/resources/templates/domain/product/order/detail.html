@@ -22,15 +22,18 @@
 
     <h1>결제정보</h1>
 
+
+    <button onclick="history.back();" class="btn btn-primary btn-sm">뒤로가기</button>
+
     <div>
         <div>주문번호: [[${order.id}]]</div>
         <div>주문코드: [[${order.code}]]</div>
         <div>주문자: [[${order.buyer.username}]]</div>
         <div>주문상품: [[${order.name}]]</div>
         <div>결제금액: [[${order.calcPayPrice}]]</div>
-        <div>결제상태: [[${order.payDate}]]</div>
-        <div>취소상태: [[${order.cancelDate}]]</div>
-        <div>환불상태: [[${order.refundDate}]]</div>
+        <div>결제상태: [[${order.forPrintPayStatus}]]</div>
+        <div>취소상태: [[${order.forPrintCancelStatus}]]</div>
+        <div>환불상태: [[${order.forPrintRefundStatus}]]</div>
     </div>
 
     <th:block th:if="${order.payable}">

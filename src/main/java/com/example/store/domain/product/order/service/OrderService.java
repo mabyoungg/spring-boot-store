@@ -138,4 +138,8 @@ public class OrderService {
 
         payDone(order);
     }
+
+    public List<Order> findByBuyer(Member buyer) {
+        return orderRepository.findByBuyerOrderByIdDesc(buyer);
+    }
 }

@@ -24,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 
 @Controller
 @RequestMapping("/order")
@@ -31,6 +32,16 @@ import java.util.Base64;
 public class OrderController {
     private final Rq rq;
     private final OrderService orderService;
+
+    @GetMapping("/myList")
+    @PreAuthorize("isAuthenticated()")
+    public String showMyList() {
+        List<Order> orders = orderService.findByBuyer(rq.getMember());
+
+        rq.setAttribute("orders", orders);
+
+        return "domain/product/order/myList";
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
