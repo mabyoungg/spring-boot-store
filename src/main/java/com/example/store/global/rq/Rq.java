@@ -2,6 +2,7 @@ package com.example.store.global.rq;
 
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.member.member.service.MemberService;
+import com.example.store.global.exceptions.GlobalException;
 import com.example.store.global.rsData.RsData;
 import com.example.store.global.security.SecurityUser;
 import com.example.store.standard.util.Ut;
@@ -9,6 +10,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +24,7 @@ import java.util.Optional;
 @Component
 @RequestScope
 @RequiredArgsConstructor
+@Slf4j
 public class Rq {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
@@ -57,6 +60,15 @@ public class Rq {
         }
 
         return sb.toString();
+    }
+
+    public String historyBack(GlobalException ex) {
+        String exStr = Ut.exception.toString(ex);
+
+        request.setAttribute("exStr", exStr);
+        log.debug(exStr);
+
+        return historyBack(ex.getRsData().getMsg());
     }
 
     public String historyBack(String msg) {
