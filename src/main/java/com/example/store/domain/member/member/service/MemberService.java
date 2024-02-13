@@ -1,5 +1,6 @@
 package com.example.store.domain.member.member.service;
 
+import com.example.store.domain.base.genFile.entity.GenFile;
 import com.example.store.domain.base.genFile.service.GenFileService;
 import com.example.store.domain.cash.cash.entity.CashLog;
 import com.example.store.domain.cash.cash.repository.CashLogRepository;
@@ -78,5 +79,18 @@ public class MemberService {
         String filePath = Ut.str.hasLength(profileImgUrl) ? Ut.file.downloadFileByHttp(profileImgUrl, AppConfig.getTempDirPath()) : "";
 
         return join(username, "", nickname, filePath);
+    }
+
+    public String getProfileImgUrl(Member member) {
+        return Optional.ofNullable(member)
+                .flatMap(this::findProfileImgUrl)
+                .orElse("https://placehold.co/30x30?text=UU");
+    }
+
+    private Optional<String> findProfileImgUrl(Member member) {
+        return genFileService.findBy(
+                        member.getModelName(), member.getId(), "common", "profileImg", 1
+                )
+                .map(GenFile::getUrl);
     }
 }

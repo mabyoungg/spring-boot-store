@@ -1,6 +1,7 @@
 package com.example.store.global.rq;
 
 import com.example.store.domain.member.member.entity.Member;
+import com.example.store.domain.member.member.service.MemberService;
 import com.example.store.global.rsData.RsData;
 import com.example.store.global.security.SecurityUser;
 import com.example.store.standard.util.Ut;
@@ -25,7 +26,9 @@ public class Rq {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
     private final EntityManager entityManager;
+    private final MemberService memberService;
     private Member member;
+
 
     public String redirect(String url, String msg) {
         String[] urlBits = url.split("#", 2);
@@ -112,5 +115,9 @@ public class Rq {
         }
 
         return member;
+    }
+
+    public String getProfileImgUrl() {
+        return memberService.getProfileImgUrl(getMember());
     }
 }
