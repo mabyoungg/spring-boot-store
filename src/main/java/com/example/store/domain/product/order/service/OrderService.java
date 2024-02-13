@@ -153,4 +153,8 @@ public class OrderService {
         if (order.isPayDone())
             refund(order);
     }
+
+    public boolean canCancel(Member actor, Order order) {
+        return actor.equals(order.getBuyer()) && order.isCancelable();
+    }
 }

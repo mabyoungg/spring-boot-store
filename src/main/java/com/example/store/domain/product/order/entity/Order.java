@@ -37,9 +37,9 @@ public class Order extends BaseEntity {
     @ToString.Exclude
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    private LocalDateTime payDate;
-    private LocalDateTime cancelDate;
-    private LocalDateTime refundDate;
+    private LocalDateTime payDate; // 결제일
+    private LocalDateTime cancelDate; // 취소일
+    private LocalDateTime refundDate; // 환불일
 
     public void addItem(CartItem cartItem) {
         if (buyer.has(cartItem.getProduct()))
@@ -49,6 +49,7 @@ public class Order extends BaseEntity {
                 .order(this)
                 .product(cartItem.getProduct())
                 .build();
+
 
         orderItems.add(orderItem);
     }
@@ -106,24 +107,31 @@ public class Order extends BaseEntity {
     }
 
     public String getForPrintPayStatus() {
-        if (payDate == null) return "결제대기";
+        if (payDate != null)
+            return "결제완료(" + payDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")";
 
-        return "결제완료(" + payDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")";
+        if (cancelDate != null) return "-";
+
+        return "결제대기";
     }
 
     public String getForPrintCancelStatus() {
-        if (!isCancelable()) return "취소불가능";
-        if (cancelDate == null) return "취소가능";
+        if (cancelDate != null)
+            return "취소완료(" + cancelDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")";
 
-        return "취소완료(" + cancelDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")";
+        if (!isCancelable()) return "취소불가능";
+
+        return "취소가능";
     }
 
     public String getForPrintRefundStatus() {
+        if (refundDate != null)
+            return "환불완료(" + refundDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")";
+
         if (payDate == null) return "-";
         if (!isCancelable()) return "-";
-        if (refundDate == null) return "환불가능";
 
-        return "환불완료(" + refundDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")";
+        return "환불가능";
     }
 
     public boolean isPayDone() {
