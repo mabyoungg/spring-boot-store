@@ -70,6 +70,23 @@ public class OrderController {
         return "domain/product/order/fail";
     }
 
+    @PostMapping("/{id}/payByCash")
+    public String payByCash(@PathVariable long id) {
+        Order order = orderService.findById(id).orElse(null);
+
+        if (order == null) {
+            throw new GlobalException("404", "존재하지 않는 주문입니다.");
+        }
+
+        if (!orderService.canPay(order, 0)) {
+            throw new GlobalException("403", "권한이 없습니다.");
+        }
+
+        orderService.payByCashOnly(order);
+
+        return rq.redirect("/order/" + order.getId(), "결제가 완료되었습니다.");
+    }
+
     @PostMapping("/confirm")
     public ResponseEntity<JSONObject> confirmPayment2(@RequestBody String jsonBody) throws Exception {
 
