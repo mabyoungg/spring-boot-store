@@ -8,7 +8,7 @@ import com.example.store.domain.cash.cash.service.CashService;
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.member.member.repository.MemberRepository;
 import com.example.store.global.app.AppConfig;
-import com.example.store.global.jpa.BaseEntity;
+import com.example.store.global.jpa.BaseTime;
 import com.example.store.global.rsData.RsData;
 import com.example.store.standard.util.Ut;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +70,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void addCash(Member member, long price, CashLog.EvenType eventType, BaseEntity relEntity) {
+    public void addCash(Member member, long price, CashLog.EvenType eventType, BaseTime relEntity) {
         CashLog cashLog = cashService.addCash(member, price, eventType, relEntity);
 
         long newRestCash = member.getRestCash() + cashLog.getPrice();

@@ -4,7 +4,7 @@ import com.example.store.domain.base.genFile.entity.GenFile;
 import com.example.store.domain.base.genFile.repository.GenFileRepository;
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.global.app.AppConfig;
-import com.example.store.global.jpa.BaseEntity;
+import com.example.store.global.jpa.BaseTime;
 import com.example.store.standard.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -137,7 +137,7 @@ public class GenFileService {
     }
 
     @Transactional
-    public GenFile tempToFile(String url, BaseEntity entity, String typeCode, String type2Code, long fileNo) {
+    public GenFile tempToFile(String url, BaseTime entity, String typeCode, String type2Code, long fileNo) {
         String fileName = Ut.file.getFileNameFromUrl(url);
         String fileExt = Ut.file.getFileExt(fileName);
 

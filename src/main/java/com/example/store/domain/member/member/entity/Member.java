@@ -3,7 +3,7 @@ package com.example.store.domain.member.member.entity;
 import com.example.store.domain.book.book.entity.Book;
 import com.example.store.domain.member.myBook.entity.MyBook;
 import com.example.store.domain.product.product.entity.Product;
-import com.example.store.global.jpa.BaseEntity;
+import com.example.store.global.jpa.BaseTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
@@ -25,7 +25,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 @Getter
 @ToString(callSuper = true)
-public class Member extends BaseEntity {
+public class Member extends BaseTime {
     private String username;
     private String password;
     private String nickname;

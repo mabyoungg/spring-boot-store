@@ -1,7 +1,7 @@
 package com.example.store.domain.cash.cash.entity;
 
 import com.example.store.domain.member.member.entity.Member;
-import com.example.store.global.jpa.BaseEntity;
+import com.example.store.global.jpa.BaseTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 @Getter
 @ToString(callSuper = true)
-public class CashLog extends BaseEntity {
+public class CashLog extends BaseTime {
     @Enumerated(EnumType.STRING)
     private EvenType eventType;
     private String relTypeCode;

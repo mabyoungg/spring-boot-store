@@ -2,6 +2,7 @@ package com.example.store.domain.product.product.controller;
 
 import com.example.store.domain.product.product.entity.Product;
 import com.example.store.domain.product.product.service.ProductService;
+import com.example.store.global.exceptions.GlobalException;
 import com.example.store.global.rq.Rq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,10 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,5 +56,29 @@ public class ProductController {
     @PreAuthorize("isAuthenticated()")
     public String showDetail(@PathVariable long id) {
         return null;
+    }
+
+    @PostMapping("/{id}/bookmark")
+    @PreAuthorize("isAuthenticated()")
+    public String bookmark(
+            @PathVariable long id,
+            @RequestParam(defaultValue = "/") String redirectUrl
+    ) {
+        Product product = productService.findById(id).orElseThrow(() -> new GlobalException("400", "존재하지 않는 상품입니다."));
+        productService.bookmark(rq.getMember(), product);
+
+        return rq.redirect(redirectUrl, null);
+    }
+
+    @DeleteMapping("/{id}/cancelBookmark")
+    @PreAuthorize("isAuthenticated()")
+    public String cancelBookmark(
+            @PathVariable long id,
+            @RequestParam(defaultValue = "/") String redirectUrl
+    ) {
+        Product product = productService.findById(id).orElseThrow(() -> new GlobalException("400", "존재하지 않는 상품입니다."));
+        productService.cancelBookmark(rq.getMember(), product);
+
+        return rq.redirect(redirectUrl, null);
     }
 }

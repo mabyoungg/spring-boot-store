@@ -2,10 +2,9 @@ package com.example.store.domain.product.cart.entity;
 
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.product.product.entity.Product;
-import com.example.store.global.jpa.BaseEntity;
+import com.example.store.global.jpa.BaseTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.*;
 
 import static lombok.AccessLevel.PROTECTED;
@@ -17,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 @Getter
 @ToString(callSuper = true)
-public class CartItem extends BaseEntity {
+public class CartItem extends BaseTime {
     @ManyToOne
     private Member buyer;
     @ManyToOne

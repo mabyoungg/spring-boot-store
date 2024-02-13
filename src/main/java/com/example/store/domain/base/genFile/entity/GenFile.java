@@ -1,7 +1,7 @@
 package com.example.store.domain.base.genFile.entity;
 
 import com.example.store.global.app.AppConfig;
-import com.example.store.global.jpa.BaseEntity;
+import com.example.store.global.jpa.BaseTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
@@ -28,7 +28,7 @@ import static lombok.AccessLevel.PROTECTED;
                 @Index(name = "GenFile_idx2", columnList = "relTypeCode, typeCode, type2Code")
         }
 )
-public class GenFile extends BaseEntity {
+public class GenFile extends BaseTime {
     private String relTypeCode;
     private long relId;
     private String typeCode;

@@ -2,7 +2,7 @@ package com.example.store.domain.book.book.entity;
 
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.product.product.entity.Product;
-import com.example.store.global.jpa.BaseEntity;
+import com.example.store.global.jpa.BaseTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 @Getter
 @ToString(callSuper = true)
-public class Book extends BaseEntity {
+public class Book extends BaseTime {
     @ManyToOne
     private Member author;
     @OneToOne
