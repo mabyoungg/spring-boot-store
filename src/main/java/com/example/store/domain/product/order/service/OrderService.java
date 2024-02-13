@@ -8,8 +8,9 @@ import com.example.store.domain.product.cart.service.CartService;
 import com.example.store.domain.product.order.entity.Order;
 import com.example.store.domain.product.order.repositry.OrderRepository;
 import com.example.store.global.exceptions.GlobalException;
-import com.example.store.standard.util.Ut;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -140,19 +141,7 @@ public class OrderService {
         payDone(order);
     }
 
-    public List<Order> findByBuyer(Member buyer) {
-        return orderRepository.findByBuyerOrderByIdDesc(buyer);
-    }
-
-    public List<Order> findByBuyerAndPayStatusAndCancelStatusAndRefundStatus(Member buyer, Boolean payStatus, Boolean cancelStatus, Boolean refundStatus) {
-        if (Ut.match.isTrue(payStatus) && cancelStatus == null && refundStatus == null) {
-            return orderRepository.findByBuyerAndPayDateIsNotNullOrderByIdDesc(buyer);
-        } else if (payStatus == null && Ut.match.isTrue(cancelStatus) && refundStatus == null) {
-            return orderRepository.findByBuyerAndCancelDateIsNotNullOrderByIdDesc(buyer);
-        } else if (payStatus == null && cancelStatus == null && Ut.match.isTrue(refundStatus)) {
-            return orderRepository.findByBuyerAndRefundDateIsNotNullOrderByIdDesc(buyer);
-        }
-
-        return orderRepository.findByBuyerOrderByIdDesc(buyer);
+    public Page<Order> search(Member buyer, Boolean payStatus, Boolean cancelStatus, Boolean refundStatus, Pageable pageable) {
+        return orderRepository.search(buyer, payStatus, cancelStatus, refundStatus, pageable);
     }
 }
