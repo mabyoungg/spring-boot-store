@@ -1,5 +1,6 @@
 package com.example.store.domain.product.order.service;
 
+import com.example.store.domain.book.purchasedBook.service.PurchasedBookService;
 import com.example.store.domain.cash.cash.entity.CashLog;
 import com.example.store.domain.member.member.entity.Member;
 import com.example.store.domain.member.member.service.MemberService;
@@ -25,6 +26,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartService cartService;
     private final MemberService memberService;
+    private final PurchasedBookService purchasedBookService;
 
     @Transactional
     public Order createFromProduct(Member buyer, Product product) {
@@ -98,6 +100,16 @@ public class OrderService {
 
     private void payDone(Order order) {
         order.setPaymentDone();
+
+        order.getOrderItems()
+                .stream()
+                .forEach(orderItem -> {
+                    Product product = orderItem.getProduct();
+
+                    if (product.isBook()) {
+                        purchasedBookService.add(order.getBuyer(), product.getBook());
+                    }
+                });
     }
 
     private void refund(Order order) {
@@ -106,6 +118,16 @@ public class OrderService {
         memberService.addCash(order.getBuyer(), payPrice, CashLog.EvenType.환불__예치금_주문결제, order);
 
         order.setRefundDone();
+
+        order.getOrderItems()
+                .stream()
+                .forEach(orderItem -> {
+                    Product product = orderItem.getProduct();
+
+                    if (product.isBook()) {
+                        purchasedBookService.delete(order.getBuyer(), product.getBook());
+                    }
+                });
     }
 
     public void checkCanPay(String orderCode, long pgPayPrice) {
@@ -142,15 +164,6 @@ public class OrderService {
         long id = Long.parseLong(code.split("__", 2)[1]);
 
         return findById(id);
-    }
-
-    public void payDone(String code) {
-        Order order = findByCode(code).orElse(null);
-
-        if (order == null)
-            throw new GlobalException("400-1", "존재하지 않는 주문입니다.");
-
-        payDone(order);
     }
 
     public Page<Order> search(Member buyer, Boolean payStatus, Boolean cancelStatus, Boolean refundStatus, Pageable pageable) {
