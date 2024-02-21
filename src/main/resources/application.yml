@@ -53,6 +53,8 @@ logging:
     org.hibernate.orm.jdbc.extract: TRACE
     org.springframework.transaction.interceptor: TRACE
 custom:
+  order:
+    cancelableSeconds: 3600
   temp:
     dirPath: c:/temp/store/temp
   genFile:

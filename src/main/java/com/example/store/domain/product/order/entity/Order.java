@@ -147,7 +147,7 @@ public class Order extends BaseTime {
         if (cancelDate != null) return false;
 
         // 결제일자로부터 1시간 지나면 취소 불가능
-        if (payDate != null && payDate.plusHours(1).isBefore(LocalDateTime.now())) return false;
+        if (payDate != null && payDate.plusSeconds(AppConfig.getOrderCancelableSeconds()).isBefore(LocalDateTime.now())) return false;
 
         return true;
     }
