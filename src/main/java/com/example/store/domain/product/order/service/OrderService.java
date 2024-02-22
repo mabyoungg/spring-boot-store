@@ -7,6 +7,8 @@ import com.example.store.domain.member.member.service.MemberService;
 import com.example.store.domain.product.cart.entity.CartItem;
 import com.example.store.domain.product.cart.service.CartService;
 import com.example.store.domain.product.order.entity.Order;
+import com.example.store.domain.product.order.entity.OrderItem;
+import com.example.store.domain.product.order.repositry.OrderItemRepository;
 import com.example.store.domain.product.order.repositry.OrderRepository;
 import com.example.store.domain.product.product.entity.Product;
 import com.example.store.global.exceptions.GlobalException;
@@ -24,6 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
     private final CartService cartService;
     private final MemberService memberService;
     private final PurchasedBookService purchasedBookService;
@@ -183,5 +186,9 @@ public class OrderService {
 
     public boolean canCancel(Member actor, Order order) {
         return actor.equals(order.getBuyer()) && order.isCancelable();
+    }
+
+    public List<OrderItem> findItems() {
+        return orderItemRepository.findAll();
     }
 }
