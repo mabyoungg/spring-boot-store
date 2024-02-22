@@ -26,10 +26,10 @@ public class AdmRebateController {
     }
 
     @PostMapping("/make")
-    public String make() {
-        List<OrderItem> orderItems = orderService.findItems();
-
-        rebateService.make(orderItems);
+    public String make(
+            String yearMonth
+    ) {
+        rebateService.make(yearMonth);
 
         return rq.redirect("/adm/rebate/make", "정산데이터를 생성했습니다.");
     }
