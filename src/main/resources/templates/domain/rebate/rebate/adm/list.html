@@ -1,0 +1,55 @@
+<html layout:decorate="~{global/admLayout}">
+
+<head>
+    <title>정산 데이터</title>
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <h1>정산 데이터</h1>
+
+    <h1>기간 : <span th:text="${yearMonth}"></span></h1>
+
+    <select class="select select-bordered" th:value="${yearMonth}" onchange="location.href = '?yearMonth=' + this.value;">
+        <option value="2024-01">2024-01</option>
+        <option value="2024-02">2024-02</option>
+    </select>
+
+    <ul class="grid grid-cols-1 md:gird-cols-2 xl:grid-cols-3 gap-5">
+        <li th:each="item : ${items}" class="card">
+            <div class="card-body bg-base-100 shadow">
+                <div class="card-title">
+                    번호 : <span th:text="${item.id}"></span>
+                </div>
+
+                <div>
+                    판매자 : <span th:text="${item.seller.username}"></span>
+                </div>
+
+                <div>
+                    구매자 : <span th:text="${item.buyer.username}"></span>
+                </div>
+
+                <div>
+                    결제금액 : <span th:text="${item.orderItem.payPrice}"></span>
+                </div>
+
+                <div>
+                    정산율 : <span th:text="${item.rebateRate}"></span>
+                </div>
+
+                <div>
+                    정산예정액 : <span th:text="${item.rebatePrice}"></span>
+                </div>
+
+                <div>
+                    정산여부 : <span th:text="${item.rebateDate}"></span>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
