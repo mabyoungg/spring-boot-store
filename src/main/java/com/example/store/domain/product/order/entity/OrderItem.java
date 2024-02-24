@@ -1,6 +1,7 @@
 package com.example.store.domain.product.order.entity;
 
 import com.example.store.domain.product.product.entity.Product;
+import com.example.store.domain.rebate.rebate.entity.RebateItem;
 import com.example.store.global.jpa.BaseTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -22,6 +23,8 @@ public class OrderItem extends BaseTime {
     private Product product;
     private double rebateRate;
     private long payPrice;
+    @ManyToOne
+    private RebateItem rebateItem;
 
     public void setPaymentDone() {
         switch (product.getRelTypeCode()) {
