@@ -7,7 +7,6 @@ import com.example.store.domain.member.member.service.MemberService;
 import com.example.store.domain.product.cart.entity.CartItem;
 import com.example.store.domain.product.cart.service.CartService;
 import com.example.store.domain.product.order.entity.Order;
-import com.example.store.domain.product.order.entity.OrderItem;
 import com.example.store.domain.product.order.repositry.OrderItemRepository;
 import com.example.store.domain.product.order.repositry.OrderRepository;
 import com.example.store.domain.product.product.entity.Product;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -187,11 +185,5 @@ public class OrderService {
 
     public boolean canCancel(Member actor, Order order) {
         return actor.equals(order.getBuyer()) && order.isCancelable();
-    }
-
-    public List<OrderItem> findNotRebatedAndNotRefundedByPayDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return orderItemRepository.findByOrderPayDateBetweenAndOrderRefundDateAndRebateItemOrderByIdDesc(
-                startDate, endDate, null, null
-        );
     }
 }
